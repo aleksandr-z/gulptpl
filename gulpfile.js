@@ -30,10 +30,9 @@ gulp.task('build', gulp.series('del', gulp.parallel('sass','assets')));
 gulp.task('watch', function(){
 	gulp.watch('app/css/*.*', gulp.series('sass'));
 	gulp.watch('app/assets/*', gulp.series('assets')).on('unlink', function(filepath){
-		
 		console.log('delete', filepath);
 	});
 })
 
-gulp.task('dev', gulp.series('build', 'watch'));
 
+gulp.task('dev', gulp.series('build', 'watch'));
