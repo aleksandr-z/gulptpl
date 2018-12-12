@@ -3,3 +3,14 @@
 h1 {
 	color:$clr;
 }
+div {
+	&.row {
+		width:100%;
+		box-sizing:border-box;
+	}
+	&.col-5 {
+		width:20%;
+		float:left;
+		margin:0px;
+	}
+}

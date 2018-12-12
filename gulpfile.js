@@ -5,6 +5,7 @@ const sass = require('gulp-sass');
 const uglify = require('gulp-uglify');
 const del = require('del');
 const sourcemaps = require('gulp-sourcemaps');
+const newer = require('gulp-newer');
 
 gulp.task('sass', function(){
 	return gulp.src('app/**/*.scss')
@@ -19,8 +20,20 @@ gulp.task('del', function(){
 })
 
 gulp.task('assets', function(){
-	return gulp.src('app/assets/**')
+	return gulp.src('app/assets/**', {since: gulp.lastRun('assets')})
+		.pipe(newer('public'))
 		.pipe(gulp.dest('public'));
 })
 
 gulp.task('build', gulp.series('del', gulp.parallel('sass','assets')));
+
+gulp.task('watch', function(){
+	gulp.watch('app/css/*.*', gulp.series('sass'));
+	gulp.watch('app/assets/*', gulp.series('assets')).on('unlink', function(filepath){
+		
+		console.log('delete', filepath);
+	});
+})
+
+gulp.task('dev', gulp.series('build', 'watch'));
+
