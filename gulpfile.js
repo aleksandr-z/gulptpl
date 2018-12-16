@@ -7,6 +7,7 @@ const del = require('del');
 const sourcemaps = require('gulp-sourcemaps');
 const newer = require('gulp-newer');
 const browser = require('browser-sync').create();
+const notify = require('gulp-notify');
 
 
 
@@ -14,6 +15,12 @@ gulp.task('sass', function(){
 	return gulp.src('app/**/*.scss')
 		.pipe(sourcemaps.init())
 		.pipe(sass().on('error', sass.logError))
+		.on('error', notify.onError(function(err){
+			return {
+				title:'sass',
+				message:err.message,
+			}
+		}))
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest('public'))
 });
