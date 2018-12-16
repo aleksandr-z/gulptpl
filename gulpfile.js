@@ -6,6 +6,9 @@ const uglify = require('gulp-uglify');
 const del = require('del');
 const sourcemaps = require('gulp-sourcemaps');
 const newer = require('gulp-newer');
+const browser = require('browser-sync').create();
+
+
 
 gulp.task('sass', function(){
 	return gulp.src('app/**/*.scss')
@@ -34,5 +37,12 @@ gulp.task('watch', function(){
 	});
 })
 
+gulp.task('serve', function(){
+	browser.init({
+		server:'public',
+	});
+	browser.watch('public/**/*.*').on('change', browser.reload);
+})
 
-gulp.task('dev', gulp.series('build', 'watch'));
+gulp.task('dev', gulp.series('build', gulp.parallel('watch', 'serve')));
+
